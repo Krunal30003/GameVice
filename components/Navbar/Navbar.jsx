@@ -5,8 +5,8 @@ const Navbar = () => {
   const [search, setSearch] = useState("");
 
   return (
-    <nav className="bg-transparent shadow px-2 mt-0 backdrop-blur-md backdrop-saturate-150">
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+    <nav className="relative z-50 bg-transparent shadow px-2 mt-0 backdrop-blur-md backdrop-saturate-150">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16 relative z-50">
         {/* Left: App Name */}
         <div className="flex-1 flex items-center">
           <div className="text-green-400 font-extrabold text-xl tracking-wider drop-shadow-lg">Stackly</div>
@@ -75,9 +75,9 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      {/* Mobile menu */}
+      {/* Mobile menu - absolutely positioned to overlay content, but below nav bar */}
       {open && (
-        <div className="md:hidden px-2 pb-3 space-y-1 bg-transparent shadow-lg backdrop-blur-md backdrop-saturate-150">
+        <div className="md:hidden absolute top-0 left-0 w-full z-40 px-2 pb-3 pt-16 space-y-1 bg-gray-900/95 shadow-lg backdrop-blur-md backdrop-saturate-150 rounded-b-xl">
           {/* Mobile Search Field */}
           <div className="flex items-center bg-gray-800/60 rounded px-2 mb-2 shadow-md">
             <input

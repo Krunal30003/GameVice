@@ -33,8 +33,9 @@ const Carousel = ({ images, current, setCurrent }) => {
 
   return (
     <div
-      className="relative w-[98vw] h-[75vh] max-w-7xl mx-auto mt-8 rounded-xl overflow-hidden shadow-lg bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900"
-      style={{ minHeight: '400px' }}
+      className="relative w-[98vw] max-w-7xl mx-auto mt-8 rounded-xl overflow-hidden shadow-lg bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900
+        h-[40vh] sm:h-[50vh] md:h-[65vh] lg:h-[75vh]"
+      style={{ minHeight: '200px' }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -45,7 +46,7 @@ const Carousel = ({ images, current, setCurrent }) => {
             key={idx}
             src={img}
             alt={`slide-${idx}`}
-            className="w-full h-full object-cover object-center rounded-xl flex-shrink-0"
+            className="w-full h-full object-cover object-center rounded-xl flex-shrink-0 select-none"
             style={{ minWidth: '100%' }}
             draggable="false"
             onError={e => {
@@ -60,29 +61,29 @@ const Carousel = ({ images, current, setCurrent }) => {
       {/* Controls */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-gray-800/70 hover:bg-green-400/80 hover:text-gray-900 text-green-400 p-2 rounded-full shadow-lg transition-colors duration-200 z-20"
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-gray-800/70 hover:bg-green-400/80 hover:text-gray-900 text-green-400 p-1 sm:p-2 rounded-full shadow-lg transition-colors duration-200 z-20"
         aria-label="Previous Slide"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-gray-800/70 hover:bg-green-400/80 hover:text-gray-900 text-green-400 p-2 rounded-full shadow-lg transition-colors duration-200 z-20"
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-gray-800/70 hover:bg-green-400/80 hover:text-gray-900 text-green-400 p-1 sm:p-2 rounded-full shadow-lg transition-colors duration-200 z-20"
         aria-label="Next Slide"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
       </button>
       {/* Dots */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+      <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-1 sm:space-x-2 z-20">
         {images.map((_, idx) => (
           <button
             key={idx}
             onClick={() => setCurrent(idx)}
-            className={`w-3 h-3 rounded-full border-2 border-green-400 transition bg-green-400/80 ${current === idx ? 'scale-125 shadow-lg' : 'bg-gray-700'}`}
+            className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full border-2 border-green-400 transition bg-green-400/80 ${current === idx ? 'scale-125 shadow-lg' : 'bg-gray-700'}`}
             aria-label={`Go to slide ${idx + 1}`}
           />
         ))}
