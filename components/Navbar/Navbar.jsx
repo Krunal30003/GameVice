@@ -77,12 +77,12 @@ const Navbar = () => {
       </div>
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden px-2 pb-3 space-y-1 bg-gray-900/60 rounded-b-xl shadow-lg backdrop-blur-md">
+        <div className="md:hidden px-2 pb-3 space-y-1 bg-transparent shadow-lg backdrop-blur-md backdrop-saturate-150">
           {/* Mobile Search Field */}
           <div className="flex items-center bg-gray-800/60 rounded px-2 mb-2 shadow-md">
             <input
               type="text"
-              className="bg-transparent outline-none text-gray-100 placeholder-gray-400 px-2 py-1 w-full"
+              className="bg-transparent outline-none text-gray-100 placeholder-green-500 px-2 py-1 w-full"
               placeholder="Search..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -94,13 +94,13 @@ const Navbar = () => {
               </svg>
             </button>
           </div>
-          <a href="#" className="block text-gray-200 hover:text-green-400 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
+          <a href="#" className="block text-green-400 hover:text-green-500 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
             Home
           </a>
-          <a href="#" className="block text-gray-200 hover:text-green-400 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
+          <a href="#" className="block text-green-400 hover:text-green-500 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
             About
           </a>
-          <a href="#" className="block text-gray-200 hover:text-green-400 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
+          <a href="#" className="block text-green-400 hover:text-green-500 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
             Contact
           </a>
         </div>
