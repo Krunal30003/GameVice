@@ -78,7 +78,7 @@ const Carousel = ({ images, current, setCurrent }) => {
   const carouselContent = (
     <div
       ref={carouselRef}
-      className="relative w-[98vw] h-[75vh] max-w-7xl mx-auto mt-8 rounded-xl overflow-hidden shadow-lg bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 min-h-[300px] sm:min-h-[400px] md:h-[65vh] lg:h-[75vh]"
+      className="relative w-full h-[55vw] max-w-7xl mx-auto mt-8 overflow-hidden shadow-lg bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 min-h-[300px] sm:min-h-[400px] md:h-[65vh] lg:h-[75vh] max-h-[80vh] aspect-[16/7] rounded-none sm:rounded-xl"
       style={{ minHeight: undefined }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
