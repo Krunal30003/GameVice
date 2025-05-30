@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Carousel from "../components/Content/Carousel";
+import About from "../components/Content/About";
+import Contact from "../components/Content/Contact";
+import { Routes, Route } from "react-router-dom";
 
 // Images for the carousel and background
 const images = [
@@ -28,8 +31,11 @@ function App() {
       />
       {/* Overlay for extra darkening */}
       <div className="fixed inset-0 -z-10 bg-black/60" aria-hidden="true" />
-      <Navbar />
-      <Carousel images={images} current={current} setCurrent={setCurrent} />
+      <Routes>
+        <Route path="/" element={<><Navbar /><Carousel images={images} current={current} setCurrent={setCurrent} /></>} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
     </div>
   );
 }

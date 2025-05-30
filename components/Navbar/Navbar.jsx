@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -9,27 +10,29 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16 relative z-50">
         {/* Left: App Name */}
         <div className="flex-1 flex items-center">
-          <div className="text-green-400 font-extrabold text-xl tracking-wider drop-shadow-lg">Stackly</div>
+          <Link to="/" className="text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.7)] font-extrabold text-xl tracking-wider font-century-gothic">
+            GameVice
+          </Link>
         </div>
         {/* Center: Nav Links */}
-        <div className="flex-1 hidden md:flex justify-center space-x-4">
-          <a href="#" className="text-green-400 hover:text-green-500 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
+        <div className="flex-1 hidden md:flex justify-center space-x-4 font-century-gothic">
+          <Link to="/" className="text-green-400 hover:text-green-300 hover:bg-green-900/30 px-3 py-2 rounded transition font-semibold drop-shadow-[0_0_6px_rgba(34,197,94,0.5)]">
             Home
-          </a>
-          <a href="#" className="text-green-400 hover:text-green-500 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
+          </Link>
+          <Link to="/about" className="text-green-400 hover:text-green-300 hover:bg-green-900/30 px-3 py-2 rounded transition font-semibold drop-shadow-[0_0_6px_rgba(34,197,94,0.5)]">
             About
-          </a>
-          <a href="#" className="text-green-400 hover:text-green-500 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
+          </Link>
+          <Link to="/contact" className="text-green-400 hover:text-green-300 hover:bg-green-900/30 px-3 py-2 rounded transition font-semibold drop-shadow-[0_0_6px_rgba(34,197,94,0.5)]">
             Contact
-          </a>
+          </Link>
         </div>
         {/* Right: Search Field, Search Icon & Mobile Menu Button */}
         <div className="flex-1 flex items-center justify-end space-x-2">
           {/* Search Field */}
-          <div className="hidden md:flex items-center bg-gray-800/60 rounded px-2 shadow-md">
+          <div className="hidden md:flex items-center bg-green-900/30 rounded px-2 shadow-md font-century-gothic">
             <input
               type="text"
-              className="bg-transparent outline-none text-gray-100 placeholder-green-500 px-2 py-1"
+              className="bg-transparent outline-none text-green-100 placeholder-green-300 px-2 py-1"
               placeholder="Search..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -42,7 +45,7 @@ const Navbar = () => {
             </button>
           </div>
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden font-century-gothic">
             <button
               onClick={() => setOpen(!open)}
               className="text-green-400 focus:outline-none"
@@ -77,12 +80,12 @@ const Navbar = () => {
       </div>
       {/* Mobile menu - absolutely positioned to overlay content, but below nav bar */}
       {open && (
-        <div className="md:hidden absolute top-0 left-0 w-full z-40 px-2 pb-3 pt-16 space-y-1 bg-gray-900/95 shadow-lg backdrop-blur-md backdrop-saturate-150 rounded-b-xl">
+        <div className="md:hidden absolute top-0 left-0 w-full z-40 px-2 pb-3 pt-16 space-y-1 bg-green-950/95 shadow-lg backdrop-blur-md backdrop-saturate-150 rounded-b-xl font-century-gothic">
           {/* Mobile Search Field */}
-          <div className="flex items-center bg-gray-800/60 rounded px-2 mb-2 shadow-md">
+          <div className="flex items-center bg-green-900/30 rounded px-2 mb-2 shadow-md">
             <input
               type="text"
-              className="bg-transparent outline-none text-gray-100 placeholder-green-500 px-2 py-1 w-full"
+              className="bg-transparent outline-none text-green-100 placeholder-green-300 px-2 py-1 w-full"
               placeholder="Search..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -94,15 +97,15 @@ const Navbar = () => {
               </svg>
             </button>
           </div>
-          <a href="#" className="block text-green-400 hover:text-green-500 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
+          <Link to="/" onClick={() => setOpen(false)} className="block text-green-400 hover:text-green-300 hover:bg-green-900/30 px-3 py-2 rounded transition font-semibold drop-shadow-[0_0_6px_rgba(34,197,94,0.5)]">
             Home
-          </a>
-          <a href="#" className="block text-green-400 hover:text-green-500 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
+          </Link>
+          <Link to="/about" onClick={() => setOpen(false)} className="block text-green-400 hover:text-green-300 hover:bg-green-900/30 px-3 py-2 rounded transition font-semibold drop-shadow-[0_0_6px_rgba(34,197,94,0.5)]">
             About
-          </a>
-          <a href="#" className="block text-green-400 hover:text-green-500 hover:bg-gray-800/60 px-3 py-2 rounded transition font-semibold">
+          </Link>
+          <Link to="/contact" onClick={() => setOpen(false)} className="block text-green-400 hover:text-green-300 hover:bg-green-900/30 px-3 py-2 rounded transition font-semibold drop-shadow-[0_0_6px_rgba(34,197,94,0.5)]">
             Contact
-          </a>
+          </Link>
         </div>
       )}
     </nav>
