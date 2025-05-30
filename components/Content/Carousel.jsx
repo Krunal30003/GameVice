@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -9,6 +9,35 @@ const Carousel = ({ images, current, setCurrent }) => {
   const intervalRef = useRef(null);
   const carouselRef = useRef(null);
   const cardRef = useRef(null);
+  const newsSectionRef = useRef(null);
+  const [typedText, setTypedText] = useState("");
+  const newsTitle = "Latest News & Leaks";
+
+  // Typewriter effect on scroll for News & Leaks
+  useEffect(() => {
+    let timeout;
+    let i = 0;
+    function typeWriter() {
+      if (i <= newsTitle.length) {
+        setTypedText(newsTitle.slice(0, i));
+        i++;
+        timeout = setTimeout(typeWriter, 45);
+      }
+    }
+    let trigger;
+    if (newsSectionRef.current) {
+      trigger = ScrollTrigger.create({
+        trigger: newsSectionRef.current,
+        start: "top 85%",
+        once: true,
+        onEnter: () => typeWriter(),
+      });
+    }
+    return () => {
+      clearTimeout(timeout);
+      if (trigger) trigger.kill();
+    };
+  }, []);
 
   useEffect(() => {
     const startAutoPlay = () => {
@@ -37,6 +66,23 @@ const Carousel = ({ images, current, setCurrent }) => {
           scrollTrigger: {
             trigger: carouselRef.current,
             start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    }
+    // News section animation
+    if (newsSectionRef.current) {
+      gsap.fromTo(
+        newsSectionRef.current,
+        { opacity: 0, y: 80 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          scrollTrigger: {
+            trigger: newsSectionRef.current,
+            start: "top 85%",
             toggleActions: "play none none none",
           },
         }
@@ -168,6 +214,86 @@ const Carousel = ({ images, current, setCurrent }) => {
     <>
       {/* Carousel */}
       {carouselContent}
+      {/* News & Leaks Section */}
+      <section
+        ref={newsSectionRef}
+        className="w-[90vw] max-w-7xl mx-auto mb-16 mt-14 sm:mt-20"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold font-century-gothic text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.7)] tracking-wider uppercase">
+            {typedText}
+            <span className="inline-block animate-pulse">|</span>
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {/* Card 1 */}
+          <div
+            className="bg-[#181818] rounded-lg overflow-hidden shadow-md flex flex-col transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl active:scale-105 focus:scale-105 focus:shadow-2xl cursor-pointer touch-manipulation"
+            tabIndex={0}
+          >
+            <div className="h-36 sm:h-40 md:h-44 bg-gray-800 flex items-center justify-center">
+              <img
+                src="/4.jpg"
+                alt="news1"
+                className="w-full h-full object-cover opacity-70"
+              />
+            </div>
+            <div className="p-4 flex-1 flex flex-col justify-between">
+              <h3 className="text-lg sm:text-xl font-bold font-century-gothic text-[#f3e7c4] leading-tight mb-2 uppercase">
+                Map Size Repastadly Twice As Big As Gta V's
+              </h3>
+              <p className="text-xs text-[#b3a98c] font-century-gothic tracking-wide">
+                {" "}
+                • 1 hour ago
+              </p>
+            </div>
+          </div>
+          {/* Card 2 */}
+          <div
+            className="bg-[#181818] rounded-lg overflow-hidden shadow-md flex flex-col transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl active:scale-105 focus:scale-105 focus:shadow-2xl cursor-pointer touch-manipulation"
+            tabIndex={0}
+          >
+            <div className="h-36 sm:h-40 md:h-44 bg-gray-800 flex items-center justify-center">
+              <img
+                src="/5.jpg"
+                alt="news2"
+                className="w-full h-full object-cover opacity-70"
+              />
+            </div>
+            <div className="p-4 flex-1 flex flex-col justify-between">
+              <h3 className="text-lg sm:text-xl font-bold font-century-gothic text-[#f3e7c4] leading-tight mb-2 uppercase">
+                Dynamiz Weather Systemic Hatine
+              </h3>
+              <p className="text-xs text-[#b3a98c] font-century-gothic tracking-wide">
+                {" "}
+                • 3 hours ago
+              </p>
+            </div>
+          </div>
+          {/* Card 3 */}
+          <div
+            className="bg-[#181818] rounded-lg overflow-hidden shadow-md flex flex-col transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl active:scale-105 focus:scale-105 focus:shadow-2xl cursor-pointer touch-manipulation"
+            tabIndex={0}
+          >
+            <div className="h-36 sm:h-40 md:h-44 bg-gray-800 flex items-center justify-center">
+              <img
+                src="/6.jpg"
+                alt="news3"
+                className="w-full h-full object-cover opacity-70"
+              />
+            </div>
+            <div className="p-4 flex-1 flex flex-col justify-between">
+              <h3 className="text-lg sm:text-xl font-bold font-century-gothic text-[#f3e7c4] leading-tight mb-2 uppercase">
+                Gta Online Progress Won't Carry Over
+              </h3>
+              <p className="text-xs text-[#b3a98c] font-century-gothic tracking-wide">
+                {" "}
+                • 6 hours ago
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Description Card */}
       <div
         ref={cardRef}
