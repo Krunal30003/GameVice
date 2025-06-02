@@ -125,8 +125,45 @@ const Carousel = ({ images, current, setCurrent }) => {
     }
   }, [length, setCurrent]);
 
-  const nextSlide = () => setCurrent(current === length - 1 ? 0 : current + 1);
-  const prevSlide = () => setCurrent(current === 0 ? length - 1 : current - 1);
+  // Infinite loop carousel logic
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const extendedImages = [images[images.length - 1], ...images, images[0]];
+
+  // Adjusted current index for extendedImages
+  const [slideIndex, setSlideIndex] = useState(current + 1);
+
+  // Sync external current with internal slideIndex
+  useEffect(() => {
+    setSlideIndex(current + 1);
+  }, [current]);
+
+  // Handle transition end for infinite effect
+  const handleTransitionEnd = () => {
+    setIsTransitioning(false);
+    if (slideIndex === 0) {
+      setSlideIndex(images.length);
+      setCurrent(images.length - 1);
+    } else if (slideIndex === images.length + 1) {
+      setSlideIndex(1);
+      setCurrent(0);
+    }
+  };
+
+  // Next/Prev slide handlers for infinite effect
+  const nextSlide = () => {
+    if (!isTransitioning) {
+      setIsTransitioning(true);
+      setSlideIndex((prev) => prev + 1);
+      setCurrent((prev) => (prev === length - 1 ? 0 : prev + 1));
+    }
+  };
+  const prevSlide = () => {
+    if (!isTransitioning) {
+      setIsTransitioning(true);
+      setSlideIndex((prev) => prev - 1);
+      setCurrent((prev) => (prev === 0 ? length - 1 : prev - 1));
+    }
+  };
 
   // Pause on hover
   const handleMouseEnter = () => {
@@ -142,42 +179,51 @@ const Carousel = ({ images, current, setCurrent }) => {
   const carouselContent = (
     <div
       ref={carouselRef}
-      className="relative w-full h-[55vw] max-w-7xl mx-auto mt-8 overflow-hidden shadow-lg bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 min-h-[300px] sm:min-h-[400px] md:h-[65vh] lg:h-[75vh] max-h-[80vh] aspect-[16/7] rounded-none sm:rounded-xl"
+      className="relative w-full h-[55vw] max-w-7xl mx-auto mt-8 overflow-hidden shadow-2xl bg-gradient-to-r from-green-900/80 via-gray-900/90 to-green-400/10 min-h-[300px] sm:min-h-[400px] md:h-[65vh] lg:h-[75vh] max-h-[80vh] aspect-[16/7] rounded-none sm:rounded-3xl animate-fade-in"
       style={{ minHeight: undefined }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {/* Images with sliding effect */}
       <div
-        className="flex transition-transform duration-700 h-full"
-        style={{ transform: `translateX(-${current * 100}%)` }}
+        className="flex h-full transition-transform duration-[2000ms] ease-in-out animate-slide-left"
+        style={{
+          transform: `translateX(-${slideIndex * 100}%)`,
+          transition: isTransitioning ? 'transform 2s ease-in-out, opacity 2s ease-in-out' : 'none',
+          opacity: isTransitioning ? 1 : 0.8,
+        }}
+        onTransitionEnd={handleTransitionEnd}
       >
-        {images.map((img, idx) => (
-          <img
-            key={idx}
-            src={img}
-            alt={`slide-${idx}`}
-            className="w-full h-full object-cover object-center rounded-xl flex-shrink-0 min-w-0 min-h-0"
-            style={{ minWidth: "100%" }}
-            draggable="false"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src =
-                "https://via.placeholder.com/600x256?text=Image+Not+Found";
-            }}
-          />
+        {extendedImages.map((img, idx) => (
+          <div key={idx} className={`relative w-full h-full flex-shrink-0 min-w-0 min-h-0 group`} style={{ minWidth: "100%" }}>
+            <img
+              src={img}
+              alt={`slide-${idx}`}
+              className="w-full h-full object-cover object-center rounded-3xl flex-shrink-0 min-w-0 min-h-0 group-hover:scale-105 transition-transform duration-700"
+              draggable="false"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src =
+                  "https://via.placeholder.com/600x256?text=Image+Not+Found";
+              }}
+            />
+            {/* Animated overlay for active slide */}
+            {slideIndex === idx && idx !== 0 && idx !== extendedImages.length - 1 && (
+              <div className="absolute inset-0 bg-gradient-to-t from-green-900/60 via-transparent to-transparent rounded-3xl pointer-events-none animate-fade-in" />
+            )}
+          </div>
         ))}
       </div>
       {/* Overlay for dark effect */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-3xl pointer-events-none" />
       {/* Controls */}
       <button
         onClick={prevSlide}
-        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-gray-800/70 hover:bg-green-400/80 hover:text-gray-900 text-green-400 p-1.5 sm:p-2 rounded-full shadow-lg transition-colors duration-200 z-20"
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-green-400/80 hover:bg-green-500 text-gray-900 p-2 sm:p-3 rounded-full shadow-xl transition-all duration-200 z-20 border-2 border-green-300 animate-bounce"
         aria-label="Previous Slide"
       >
         <svg
-          className="w-5 h-5 sm:w-6 sm:h-6"
+          className="w-6 h-6 sm:w-7 sm:h-7"
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
@@ -192,11 +238,11 @@ const Carousel = ({ images, current, setCurrent }) => {
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-gray-800/70 hover:bg-green-400/80 hover:text-gray-900 text-green-400 p-1.5 sm:p-2 rounded-full shadow-lg transition-colors duration-200 z-20"
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-green-400/80 hover:bg-green-500 text-gray-900 p-2 sm:p-3 rounded-full shadow-xl transition-all duration-200 z-20 border-2 border-green-300 animate-bounce"
         aria-label="Next Slide"
       >
         <svg
-          className="w-5 h-5 sm:w-6 sm:h-6"
+          className="w-6 h-6 sm:w-7 sm:h-7"
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
@@ -210,14 +256,17 @@ const Carousel = ({ images, current, setCurrent }) => {
         </svg>
       </button>
       {/* Dots */}
-      <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 sm:space-x-2 z-20">
+      <div className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 flex space-x-2 sm:space-x-3 z-20">
         {images.map((_, idx) => (
           <button
             key={idx}
-            onClick={() => setCurrent(idx)}
-            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border-2 border-green-400 transition bg-green-400/80 ${
+            onClick={() => {
+              setSlideIndex(idx + 1);
+              setCurrent(idx);
+            }}
+            className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-green-400 transition bg-green-400/80 ${
               current === idx
-                ? "scale-110 sm:scale-125 shadow-lg"
+                ? "scale-125 shadow-xl animate-pulse"
                 : "bg-gray-700"
             }`}
             aria-label={`Go to slide ${idx + 1}`}
@@ -235,12 +284,11 @@ const Carousel = ({ images, current, setCurrent }) => {
       {/* News & Leaks Section */}
       <section
         ref={newsSectionRef}
-        className="w-[90vw] max-w-7xl mx-auto mb-16 mt-14 sm:mt-20"
+        className="w-[90vw] max-w-7xl mx-auto mb-16 mt-14 sm:mt-20 animate-fade-in"
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl sm:text-3xl font-bold font-century-gothic text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.7)] tracking-wider uppercase">
-            {typedText}
-            <span className="inline-block animate-pulse">|</span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold font-century-gothic text-green-400 drop-shadow-[0_0_12px_rgba(34,197,94,0.8)] tracking-wider uppercase flex items-center gap-2">
+            <span className="animate-typewriter">{typedText}</span>
           </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -313,11 +361,11 @@ const Carousel = ({ images, current, setCurrent }) => {
         </div>
       </section>
       {/* Trailer Section - Title and YouTube Video with scroll animation */}
-      <div ref={trailerRef} className="flex flex-col items-center mt-10 mb-16">
-        <h2 className="text-2xl sm:text-3xl font-bold font-century-gothic text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.7)] tracking-wider uppercase mb-6 text-center">
+      <div ref={trailerRef} className="flex flex-col items-center mt-10 mb-16 animate-fade-in">
+        <h2 className="text-2xl sm:text-3xl font-extrabold font-century-gothic text-green-400 drop-shadow-[0_0_12px_rgba(34,197,94,0.8)] tracking-wider uppercase mb-6 text-center animate-pulse">
           Trailer
         </h2>
-        <div className="w-full aspect-video max-w-3xl rounded-xl overflow-hidden shadow-2xl border-4 border-green-400/30">
+        <div className="w-full aspect-video max-w-3xl rounded-3xl overflow-hidden shadow-2xl border-4 border-green-400/30 animate-fade-in">
           <iframe
             width="100%"
             height="100%"

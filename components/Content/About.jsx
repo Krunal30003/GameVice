@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Countdown from "./Countdown";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,6 +40,8 @@ const About = () => {
           GameVice is the ultimate destination for gamers eagerly following the launch of GTA 6 and other top-tier titles. As hype builds around Rockstar's most anticipated release, GameVice keeps you in the loop with the latest news, leaks, trailers, and community discussions all in one place. Dive into detailed breakdowns of GTA 6’s storyline, characters, and gameplay features, or join fellow fans in speculating and sharing theories. GameVice also lets you create personalized stacks to track Rockstar games, compare GTA titles, and see how GTA 6 ranks against other open-world giants. Whether you're a longtime fan of the Grand Theft Auto series or new to the franchise, GameVice is your go-to hub for everything GTA 6 and beyond.
         </p>
       </div>
+      {/* Countdown Section */}
+      <Countdown />
     </>
   );
 };
